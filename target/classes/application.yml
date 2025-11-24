@@ -1,9 +1,0 @@
-server:
-  port: 8080
-spring:
-  application:
-    name: scenery-backend
-logging:
-  level:
-    root: info
-    com.doubleshan.scenery: info
