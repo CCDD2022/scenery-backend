@@ -3,33 +3,31 @@ package com.doubleshan.scenery.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.Instant;
+import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "spots")
+public class Spot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 50, unique = true)
-    private String username;
-    @Column(nullable = false, length = 255)
-    private String passwordHash;
-    @Column(length = 100)
-    private String nickName = "";
+    @Column(nullable = false, length = 100)
+    private String name;
+    @Column(nullable = false, precision = 10, scale = 8)
+    private BigDecimal lat;
+    @Column(nullable = false, precision = 11, scale = 8)
+    private BigDecimal lng;
+    @Lob
+    private String description;
     @Column(length = 500)
-    private String avatarUrl = "";
-    @Column(length = 20, unique = true)
-    private String phone;
+    private String image;
     @Column(nullable = false)
-    private Integer totalPoints = 0;
-    @Column(nullable = false)
-    private Integer checkInCount = 0;
+    private Integer status = 1;
     @Column(nullable = false)
     private Instant createdAt = Instant.now();
     @Column(nullable = false)
     private Instant updatedAt = Instant.now();
-    private Instant deletedAt;
 
     @PreUpdate
     public void preUpdate() {

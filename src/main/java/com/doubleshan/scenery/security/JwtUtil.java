@@ -3,37 +3,47 @@ package com.doubleshan.scenery.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-
+import io.jsonwebtoken.Claims;
 import java.security.Key;
 import java.util.Date;
-import java.util.Map;
 
 public class JwtUtil {
-    private static final Key KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private static final long EXP_MS = 3600_000; // 1h
+    private final Key key;
+    private final long expireMs;
 
-    public static String generateToken(String userId, String role) {
+    public JwtUtil(String secret, long expireMs) {
+        if (secret == null || secret.length() < 32) {
+            secret = secret + "_DEFAULT_SECRET_PAD_12345678901234567890"; // padding
+        }
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.expireMs = expireMs;
+    }
+
+    public String createToken(Long userId, String username) {
+        Date now = new Date();
         return Jwts.builder()
-                .setSubject(userId)
-                .addClaims(Map.of("role", role))
-                .setExpiration(new Date(System.currentTimeMillis() + EXP_MS))
-                .signWith(KEY)
+                .setSubject(String.valueOf(userId))
+                .claim("username", username)
+                .claim("roles", "ROLE_USER")
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + expireMs))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public static JwtUser parse(String token) {
-        var parser = Jwts.parserBuilder().setSigningKey(KEY).build();
-        var claims = parser.parseClaimsJws(token).getBody();
-        return new JwtUser(claims.getSubject(), (String) claims.get("role"));
+    public String createToken(Long userId, String username, String roles) {
+        Date now = new Date();
+        return Jwts.builder()
+                .setSubject(String.valueOf(userId))
+                .claim("username", username)
+                .claim("roles", roles)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + expireMs))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 
-    public static class JwtUser {
-        public final String userId;
-        public final String role;
-
-        public JwtUser(String u, String r) {
-            this.userId = u;
-            this.role = r;
-        }
+    public Claims parse(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 }

@@ -2,11 +2,12 @@ package com.doubleshan.scenery.repository;
 
 import com.doubleshan.scenery.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, String> {
-    Optional<User> findByOpenId(String openId);
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
+    Optional<User> findByUsername(String username);
+
+    Optional<User> findByPhone(String phone);
 }
