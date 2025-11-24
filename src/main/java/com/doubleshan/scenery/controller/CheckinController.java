@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 public class CheckinController {
     private final CheckinService checkInService;
 
-    @PostMapping({ "/create", "/createCheckIn" })
+    @PostMapping("/create")
     public ApiResponse<Void> create(@RequestBody @Valid CheckInDtos.CreateCheckInReq req, Authentication a) {
         checkInService.create(userId(a), req);
         return ApiResponse.ok(null);
     }
 
-    @PostMapping({ "/like", "/likeCheckIn" })
+    @PostMapping("/like")
     public ApiResponse<CheckInDtos.LikeResp> like(@RequestBody @Valid CheckInDtos.LikeReq req, Authentication a) {
         return ApiResponse.ok(checkInService.like(userId(a), req.getCheckInId()));
     }

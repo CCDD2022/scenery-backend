@@ -2,6 +2,9 @@ package com.doubleshan.scenery.controller;
 
 import com.doubleshan.scenery.common.api.ApiResponse;
 import com.doubleshan.scenery.dto.SpotDtos;
+import com.doubleshan.scenery.model.Checkin;
+import com.doubleshan.scenery.service.CheckinService;
+import org.springframework.data.domain.Page;
 import com.doubleshan.scenery.service.SpotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +17,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PublicController {
     private final SpotService spotService;
+    private final CheckinService checkinService;
 
     @GetMapping("/introduction")
     public ApiResponse<String> intro() {
         return ApiResponse.ok("引领区简介占位内容");
     }
 
-    @GetMapping({ "/spots", "/getSpotList" })
+    @GetMapping("/spots")
     public ApiResponse<List<SpotDtos.SpotResp>> spotList(@RequestParam(required = false) Double lat,
             @RequestParam(required = false) Double lng) {
         List<SpotDtos.SpotResp> list = spotService.listActive().stream().map(s -> {
@@ -36,7 +40,7 @@ public class PublicController {
         return ApiResponse.ok(list);
     }
 
-    @GetMapping({ "/nearby", "/getNearbySpots" })
+    @GetMapping("/nearby")
     public ApiResponse<List<SpotDtos.SpotResp>> nearby(@RequestParam Double lat, @RequestParam Double lng,
             @RequestParam(defaultValue = "5") int limit) {
         List<SpotDtos.SpotResp> list = spotService.listActive().stream()
@@ -64,5 +68,10 @@ public class PublicController {
                 * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
+    }
+
+    @GetMapping("/feed")
+    public ApiResponse<Page<Checkin>> feedPublic(@RequestParam(defaultValue = "0") int page) {
+        return ApiResponse.ok(checkinService.feed(page));
     }
 }

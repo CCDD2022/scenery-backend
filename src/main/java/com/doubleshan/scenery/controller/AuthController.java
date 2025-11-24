@@ -15,14 +15,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthService authService;
 
-    // 别名 userRegister
-    @PostMapping({ "/register", "/userRegister" })
+    @PostMapping("/register")
     public ApiResponse<AuthDtos.RegisterResp> register(@RequestBody @Valid AuthDtos.RegisterReq req) {
         return ApiResponse.ok(authService.register(req));
     }
 
-    // 别名 userLogin
-    @PostMapping({ "/login", "/userLogin" })
+    @PostMapping("/login")
     public ApiResponse<AuthDtos.LoginResp> login(@RequestBody @Valid AuthDtos.LoginReq req) {
         return ApiResponse.ok(authService.login(req));
     }

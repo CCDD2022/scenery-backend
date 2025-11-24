@@ -12,9 +12,7 @@ public class CheckInDtos {
         @NotBlank
         private String photoFileID;
         private String comment;
-        @NotNull
         private Double lat;
-        @NotNull
         private Double lng;
     }
 
