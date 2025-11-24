@@ -3,6 +3,18 @@ server:
 spring:
   application:
     name: scenery-backend
+  datasource:
+    url: jdbc:mysql://localhost:3306/scenery?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=utf8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
 logging:
   level:
     root: info

@@ -53,6 +53,6 @@ public class PointsRuleAdminService {
     }
 
     public void delete(String id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 }

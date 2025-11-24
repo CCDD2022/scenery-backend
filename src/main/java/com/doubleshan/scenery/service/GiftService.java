@@ -50,7 +50,7 @@ public class GiftService {
     }
 
     public void delete(String id) {
-        giftRepository.delete(id);
+        giftRepository.deleteById(id);
     }
 
     public GiftRedeem redeem(String giftId, String userId) {
@@ -69,7 +69,7 @@ public class GiftService {
     }
 
     public List<GiftRedeem> myRedeems(String userId) {
-        return redeemRepository.findByUser(userId);
+        return redeemRepository.findByUserId(userId);
     }
 
     public GiftRedeem verify(String redeemId, String merchantId) {

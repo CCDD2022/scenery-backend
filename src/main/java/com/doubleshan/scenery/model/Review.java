@@ -1,14 +1,22 @@
 package com.doubleshan.scenery.model;
 
+import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
 
+@Entity
+@Table(name = "review")
 public class Review {
+    @Id
     private String id = UUID.randomUUID().toString();
+    @Column(length = 64)
     private String userId;
+    @Column(length = 64)
     private String poiId;
+    @Column(length = 64)
     private String checkinId;
     private int stars;
+    @Column(length = 1000)
     private String content;
     private Instant createdAt = Instant.now();
 

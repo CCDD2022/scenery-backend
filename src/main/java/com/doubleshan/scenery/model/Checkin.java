@@ -1,18 +1,29 @@
 package com.doubleshan.scenery.model;
 
+import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+@Entity
+@Table(name = "checkin")
 public class Checkin {
+    @Id
     private String id = UUID.randomUUID().toString();
+    @Column(length = 64, nullable = false)
     private String userId;
+    @Column(length = 64, nullable = false)
     private String poiId;
     private double latitude;
     private double longitude;
+    @Column(length = 500)
     private String photo;
     private Instant createdAt = Instant.now();
+
+    @ElementCollection
+    @CollectionTable(name = "checkin_like", joinColumns = @JoinColumn(name = "checkin_id"))
+    @Column(name = "user_id", length = 64)
     private Set<String> likes = new HashSet<>();
 
     public Checkin() {

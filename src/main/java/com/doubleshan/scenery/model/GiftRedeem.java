@@ -1,15 +1,23 @@
 package com.doubleshan.scenery.model;
 
+import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
 
+@Entity
+@Table(name = "gift_redeem")
 public class GiftRedeem {
+    @Id
     private String id = UUID.randomUUID().toString();
+    @Column(length = 64)
     private String giftId;
+    @Column(length = 64)
     private String userId;
+    @Column(length = 128, unique = true)
     private String qrcode = UUID.randomUUID().toString();
     private boolean used;
     private Instant usedAt;
+    @Column(length = 64)
     private String merchantId;
 
     public GiftRedeem() {

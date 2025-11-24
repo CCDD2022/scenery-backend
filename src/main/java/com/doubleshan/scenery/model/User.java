@@ -1,15 +1,25 @@
 package com.doubleshan.scenery.model;
 
+import jakarta.persistence.*;
 import java.util.UUID;
 
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
     private String id = UUID.randomUUID().toString();
+    @Column(name = "open_id", unique = true, length = 64)
     private String openId;
+    @Column(length = 64)
     private String nickname;
+    @Column(length = 256)
     private String avatar;
+    @Column(length = 32)
     private String phone;
     private int points;
-    private String role = "USER"; // USER / ADMIN / MERCHANT(仅商家账户时)
+    @Column(length = 16)
+    private String role = "USER"; // USER / ADMIN / MERCHANT
+    @Column(length = 64)
     private String department; // 部门(后台管理使用)
     private boolean disabled; // 是否禁用
 

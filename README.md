@@ -12,6 +12,7 @@
 - 控制器：`controller/visitor` 游客；`controller/merchant` 商家；`controller/admin` 管理；`controller/common` 公共&外部占位
 - VO：`vo` 对外返回视图对象（含距离、分类翻译、禁用状态等）
 - 响应与错误：`response` 统一结构 & 全局异常
+- 持久化：已从内存迁移至 MySQL + Spring Data JPA (见下文)
 
 ## 模块与需求映射
 
@@ -215,6 +216,35 @@ mvn clean package
 mvn spring-boot:run
 ```
 访问: `http://localhost:8080/actuator/health` 或接口前缀 `http://localhost:8080/api/v1`。
+
+### MySQL 持久化配置
+
+application.yml 示例：
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/scenery?useSSL=false&serverTimezone=UTC&characterEncoding=utf8
+    username: root
+    password: <你的密码>
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+```
+
+迁移要点：
+- 原内存 `ConcurrentHashMap` 仓库已改为 `JpaRepository` 接口（例如 `POIRepository extends JpaRepository<POI,String>`）。
+- 模型添加 `@Entity @Table @Id` 等注解；部分字段增加长度与唯一约束。
+- 点赞集合使用 `@ElementCollection` 存储（`checkin_like` 表）。
+- 所有写操作仍通过 Service 层，逻辑未变化；删除改为 `deleteById`。
+- 初始化示例数据通过 `CommandLineRunner`，仅在表为空时插入。
+
+生产建议：
+- 将 `ddl-auto` 改为 `validate` 并使用 Flyway/Liquibase 管理迁移。
+- 引入统一审计字段（create_time/update_time），可用 `@MappedSuperclass` + `@EntityListeners`。
+- 添加数据库索引：常用筛选列如 `user_id`, `poi_id`, `created_at`。
+- 分页查询替换当前部分一次性全量查询。
+
 
 ## 已实现主要接口 (Java)
 

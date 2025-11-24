@@ -1,14 +1,21 @@
 package com.doubleshan.scenery.model;
 
+import jakarta.persistence.*;
 import java.util.UUID;
 
+@Entity
+@Table(name = "merchant")
 public class Merchant {
+    @Id
     private String id = UUID.randomUUID().toString();
+    @Column(length = 128)
     private String name;
     private double latitude;
     private double longitude;
     private int heat;
+    @Column(length = 256)
     private String address;
+    @Column(length = 32)
     private String phone;
 
     public Merchant() {

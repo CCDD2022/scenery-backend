@@ -44,7 +44,7 @@ public class PointsService {
     }
 
     public List<PointLedger> ledger(String userId) {
-        return ledgerRepository.findByUser(userId);
+        return ledgerRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }
 
     public Map<String, Object> stats(String userId) {

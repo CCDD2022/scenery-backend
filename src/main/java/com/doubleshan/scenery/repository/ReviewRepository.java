@@ -1,27 +1,16 @@
 package com.doubleshan.scenery.repository;
 
 import com.doubleshan.scenery.model.Review;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
+
+import java.util.List;
 
 @Repository
-public class ReviewRepository {
-    private final Map<String, Review> store = new ConcurrentHashMap<>();
+public interface ReviewRepository extends JpaRepository<Review, String> {
+    List<Review> findByPoiIdOrderByCreatedAtDesc(String poiId);
 
-    public Review save(Review r) {
-        store.put(r.getId(), r);
-        return r;
-    }
-
-    public List<Review> findByPoi(String poiId) {
-        return store.values().stream().filter(x -> x.getPoiId().equals(poiId))
-                .sorted(Comparator.comparing(Review::getCreatedAt).reversed()).collect(Collectors.toList());
-    }
-
-    public List<Review> recent(int limit) {
-        return store.values().stream().sorted(Comparator.comparing(Review::getCreatedAt).reversed()).limit(limit)
-                .collect(Collectors.toList());
-    }
+    Page<Review> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

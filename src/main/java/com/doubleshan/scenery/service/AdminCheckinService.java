@@ -28,7 +28,7 @@ public class AdminCheckinService {
     }
 
     public void delete(String id) {
-        checkinRepository.delete(id);
+        checkinRepository.deleteById(id);
     }
 
     public Map<String, Long> statsByPoi() {

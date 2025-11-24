@@ -39,6 +39,6 @@ public class POIService {
     }
 
     public void delete(String id) {
-        poiRepository.delete(id);
+        poiRepository.deleteById(id);
     }
 }

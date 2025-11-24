@@ -23,10 +23,11 @@ public class ReviewService {
     }
 
     public List<Review> listByPoi(String poiId) {
-        return reviewRepository.findByPoi(poiId);
+        return reviewRepository.findByPoiIdOrderByCreatedAtDesc(poiId);
     }
 
     public List<Review> dynamics(int limit) {
-        return reviewRepository.recent(limit);
+        return reviewRepository.findAllByOrderByCreatedAtDesc(org.springframework.data.domain.PageRequest.of(0, limit))
+                .getContent();
     }
 }

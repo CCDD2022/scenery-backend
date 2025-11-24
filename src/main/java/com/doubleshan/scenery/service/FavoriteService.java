@@ -16,16 +16,16 @@ public class FavoriteService {
     }
 
     public Favorite add(String userId, String poiId) {
-        return favoriteRepository.findByUserAndPoi(userId, poiId)
+        return favoriteRepository.findByUserIdAndPoiId(userId, poiId)
                 .orElseGet(() -> favoriteRepository.save(new Favorite(userId, poiId)));
     }
 
     public List<Favorite> list(String userId) {
-        return favoriteRepository.findByUser(userId);
+        return favoriteRepository.findByUserId(userId);
     }
 
     public void remove(String id) {
         favoriteRepository.findById(id).orElseThrow(() -> new NotFoundException("收藏不存在"));
-        favoriteRepository.delete(id);
+        favoriteRepository.deleteById(id);
     }
 }

@@ -37,6 +37,6 @@ public class MerchantService {
     }
 
     public void delete(String id) {
-        merchantRepository.delete(id);
+        merchantRepository.deleteById(id);
     }
 }

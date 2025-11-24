@@ -38,10 +38,11 @@ public class CheckinService {
     }
 
     public List<Checkin> userCheckins(String userId) {
-        return checkinRepository.findByUser(userId);
+        return checkinRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }
 
     public List<Checkin> dynamics(int limit) {
-        return checkinRepository.recent(limit);
+        return checkinRepository.findAllByOrderByCreatedAtDesc(org.springframework.data.domain.PageRequest.of(0, limit))
+                .getContent();
     }
 }
