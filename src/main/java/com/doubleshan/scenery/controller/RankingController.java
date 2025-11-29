@@ -19,7 +19,7 @@ public class RankingController {
     private final UserRepository userRepository;
 
     @GetMapping("/ranking")
-    public ApiResponse<Page<User>> ranking(@RequestParam(defaultValue = "0") int page) {
+    public ApiResponse<Page<User>> ranking(@RequestParam(name = "page", defaultValue = "0") int page) {
         Page<User> p = userRepository.findAll(PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "totalPoints")));
         return ApiResponse.ok(p);
     }

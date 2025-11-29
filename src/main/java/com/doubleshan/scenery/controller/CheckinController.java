@@ -28,12 +28,12 @@ public class CheckinController {
     }
 
     @GetMapping("/my")
-    public ApiResponse<Page<Checkin>> my(@RequestParam(defaultValue = "0") int page, Authentication a) {
+    public ApiResponse<Page<Checkin>> my(@RequestParam(name = "page", defaultValue = "0") int page, Authentication a) {
         return ApiResponse.ok(checkInService.myCheckIns(userId(a), page));
     }
 
     @GetMapping("/feed")
-    public ApiResponse<Page<Checkin>> feed(@RequestParam(defaultValue = "0") int page) {
+    public ApiResponse<Page<Checkin>> feed(@RequestParam(name = "page", defaultValue = "0") int page) {
         return ApiResponse.ok(checkInService.feed(page));
     }
 

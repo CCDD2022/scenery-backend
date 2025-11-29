@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminController {
     private final AdminService adminService;
 
     @GetMapping("/users")
-    public ApiResponse<java.util.List<AdminDtos.UserSummaryResp>> users(@RequestParam(defaultValue = "0") int page,
-            @RequestParam(required = false) String keyword) {
+    public ApiResponse<java.util.List<AdminDtos.UserSummaryResp>> users(@RequestParam(name="page",defaultValue = "0") int page,
+            @RequestParam(name="keyword",required = false) String keyword) {
         Page<User> p = adminService.userList(page, keyword);
         java.util.List<AdminDtos.UserSummaryResp> list = p.stream().map(u -> {
             AdminDtos.UserSummaryResp r = new AdminDtos.UserSummaryResp();

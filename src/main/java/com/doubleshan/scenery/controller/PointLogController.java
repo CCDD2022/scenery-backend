@@ -18,7 +18,7 @@ public class PointLogController {
     private final PointService pointService;
 
     @GetMapping("/list")
-    public ApiResponse<Page<PointLog>> list(@RequestParam(defaultValue = "0") int page, Authentication a) {
+    public ApiResponse<Page<PointLog>> list(@RequestParam(name = "page", defaultValue = "0") int page, Authentication a) {
         return ApiResponse.ok(pointService.list(userId(a), page));
     }
 
